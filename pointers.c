@@ -1,17 +1,25 @@
 #include <stdio.h>
 
 // Pointer values are strongly typed.
+
 int pointer_basics();
 int pointer_to_pointer();
 int pointer_as_function_arguments();
+int pointers_and_arrays();
+
+void Increment(); // helper function of pointer_as_function_arguments.
 
 int main()
 {
     // pointer_basics();
 
-    pointer_to_pointer();
+    // pointer_to_pointer();
 
-    pointer_as_function_arguments();
+    // pointer_as_function_arguments();
+
+    pointers_and_arrays();
+
+    return 0;
 }
 
 int pointer_basics()
@@ -70,10 +78,51 @@ int pointer_to_pointer()
     printf("%d\n", *(*q));
     ***r = **q + 2;
     printf("%d\n", *(*(*r)));
+
+    return 0;
 }
 
+// call by reference
 int pointer_as_function_arguments()
 {
+    int a = 10;
+    Increment(&a);
+    printf("a = %d\n", a); // 13
+
+    return 0;
 }
-// Tokyo - lofi geek
-// Dew - Casiio, Sleepermane
+
+void Increment(int *p)
+{
+    // *p += 1;
+    (*p)++;
+    printf("%d\n", *p);   // 11
+    printf("%d\n", ++*p); // 12
+
+    // why isn't the value incremented??
+    printf("%d\n", (*p)++); // 12
+}
+
+int pointers_and_arrays()
+{
+    int A[5] = {2, 4, 5, 8, 1};
+
+    // An array's value is just the address of the first element.
+    printf("%p\n", A);
+    printf("%p\n", &A[0]);
+
+    printf("%d\n", A[0]);
+    printf("%d\n", *A);
+    printf("%d\n", *(A + 1));
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d", *(A + i));
+    }
+    printf("\n");
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d\n", &A[i]);
+    }
+}
