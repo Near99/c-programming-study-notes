@@ -99,7 +99,7 @@ void Increment(int *p)
     printf("%d\n", *p);   // 11
     printf("%d\n", ++*p); // 12
 
-    // why isn't the value incremented??
+    // why doesn't the value increment?
     printf("%d\n", (*p)++); // 12
 }
 
