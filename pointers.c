@@ -7,7 +7,7 @@ int pointer_to_pointer();
 int pointer_as_function_arguments();
 int pointers_and_arrays();
 
-void Increment(); // helper function of pointer_as_function_arguments.
+void Increment(); // helper function for pointer_as_function_arguments.
 
 int main()
 {
