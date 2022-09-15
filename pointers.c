@@ -1,13 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 
 // Pointer values are strongly typed.
 
-int pointer_basics();
-int pointer_to_pointer();
-int pointer_as_function_arguments();
-int pointers_and_arrays();
+void pointer_basics();
+void pointer_to_pointer();
+void pointer_as_function_arguments();
+void pointers_and_arrays();
+void arrays_as_function_arguments();
+void character_arrays_and_pointers();
 
-void Increment(); // helper function for pointer_as_function_arguments.
+// helper functions.
+int sum_of_elements(int *a, int size); // helper function for arrays_as_function_arguments.
+void increment();                      // helper function for pointer_as_function_arguments.
+void print();                          // helper function for character_arrays_and_pointers.
 
 int main()
 {
@@ -17,12 +23,16 @@ int main()
 
     // pointer_as_function_arguments();
 
-    pointers_and_arrays();
+    // pointers_and_arrays();
+
+    // arrays_as_function_arguments();
+
+    // character_arrays_and_pointers();
 
     return 0;
 }
 
-int pointer_basics()
+void pointer_basics()
 {
     int a = 1025;
     int *p = &a;
@@ -50,11 +60,9 @@ int pointer_basics()
 
     // Generic pointer.
     void *pv;
-
-    return 0;
 }
 
-int pointer_to_pointer()
+void pointer_to_pointer()
 {
     int x = 5;
     int *p = &x;
@@ -78,21 +86,17 @@ int pointer_to_pointer()
     printf("%d\n", *(*q));
     ***r = **q + 2;
     printf("%d\n", *(*(*r)));
-
-    return 0;
 }
 
 // call by reference
-int pointer_as_function_arguments()
+void pointer_as_function_arguments()
 {
     int a = 10;
-    Increment(&a);
+    increment(&a);
     printf("a = %d\n", a); // 13
-
-    return 0;
 }
 
-void Increment(int *p)
+void increment(int *p)
 {
     // *p += 1;
     (*p)++;
@@ -103,17 +107,17 @@ void Increment(int *p)
     printf("%d\n", (*p)++); // 12
 }
 
-int pointers_and_arrays()
+// An array's value is just the address of the first element.
+void pointers_and_arrays()
 {
     int A[5] = {2, 4, 5, 8, 1};
 
-    // An array's value is just the address of the first element.
-    printf("%p\n", A);
-    printf("%p\n", &A[0]);
+    printf("%p\n", A);     // address of the first element.
+    printf("%p\n", &A[0]); // same as above.
 
-    printf("%d\n", A[0]);
-    printf("%d\n", *A);
-    printf("%d\n", *(A + 1));
+    printf("%d\n", A[0]);     // first element.
+    printf("%d\n", *A);       // same as above.
+    printf("%d\n", *(A + 1)); // second element
 
     for (int i = 0; i < 5; i++)
     {
@@ -125,4 +129,61 @@ int pointers_and_arrays()
     {
         printf("%d\n", &A[i]);
     }
+}
+
+void arrays_as_function_arguments()
+{
+    // Compiler will allocate the minimum amount of space necessary if the size of an array is not explicit specified.
+    int a[] = {1, 2, 3, 4, 5};
+    int size = sizeof(a) / sizeof(*a);
+    int r = sum_of_elements(&a[0], size);
+    printf("%d\n", r);
+}
+
+// int a[] is as the as as int *a, another example of "pass by reference".
+int sum_of_elements(int *a, int size)
+{
+    int r = 0;
+
+    for (int i = 0; i < size; i++)
+    {
+        r += a[i];
+    }
+
+    return r;
+}
+
+/**
+ * Size of array for storing strings must be greater and equal to the number of characters in string + 1.
+ * one extra space is for telling that it's the end of the string array.
+ * 
+ * Arrays and pointers are different types that are used in similar manner.
+ */
+void character_arrays_and_pointers()
+{
+    char c[20] = "JOHN";
+    int l = strlen(c);
+
+    printf("%s\n", c);         // JOHN
+    printf("%d\n", l);         // 4
+    printf("%d\n", sizeof(c)); // 20
+
+    print(c);
+
+    for (int i = 0; i < 20; i++)
+    {
+        printf("%d", c[i]); // all unused are initialized to null (0 in ASCII);
+    }
+
+    printf("\n");
+}
+
+void print(char *c)
+{
+    while (*c != '\0')
+    {
+        printf("%c", *c);
+        c++;
+    }
+    printf("\n");
 }
