@@ -130,7 +130,7 @@ void pointers_and_arrays()
 
     for (int i = 0; i < 5; i++)
     {
-        printf("%d\n", &A[i]);
+        printf("%ls\n", &A[i]);
     }
 }
 
@@ -159,7 +159,7 @@ int sum_of_elements(int *a, int size)
 /**
  * Size of array for storing strings must be greater and equal to the number of characters in string + 1.
  * one extra space is for telling that it's the end of the string array.
- * 
+ *
  * Arrays and pointers are different types that are used in similar manner.
  */
 void character_arrays_and_pointers()
@@ -168,9 +168,9 @@ void character_arrays_and_pointers()
     char *s = "JOHN";    // string gets stored as compile time constant which cannot be modified.
     int l = strlen(c);
 
-    printf("%s\n", c);         // JOHN
-    printf("%d\n", l);         // 4
-    printf("%d\n", sizeof(c)); // 20
+    printf("%s\n", c);          // JOHN
+    printf("%d\n", l);          // 4
+    printf("%ld\n", sizeof(c)); // 20
 
     print(c);
 
@@ -198,11 +198,14 @@ void pointers_and_multi_dimensional_arrays()
     // it allocates 24 bytes in sequential order.
     int b[2][3] = {{2, 3, 6}, {4, 5, 8}};
 
+    // pointer to an array of 3 intergers.
+    int(*p)[3] = b;
+
     // int *p = b; // error cause b will return a pointer to the 1-d array of 3 intergers, but *p needs an address.
 
-    printf("%d\n", sizeof(b));    // 24
-    printf("%d\n", sizeof(b[0])); // 12
-    printf("%d\n", sizeof(b[1])); // 12
+    printf("%ld\n", sizeof(b));    // 24
+    printf("%ld\n", sizeof(b[0])); // 12
+    printf("%ld\n", sizeof(b[1])); // 12
 
     // b = b[0] = &b[0] = &[b][0][0].
     printf("%p\n", b);        // pointer to the first element of an array of three intergers.
@@ -221,9 +224,11 @@ void pointers_and_multi_dimensional_arrays()
     printf("%p\n", &(*b));
     printf("%p\n", &(*(*b)));
 
-    // printf("%p\n", &b[0][0]);
-    // printf("%p\n", &b[0][1]);
-    // printf("%p\n", &b[0][2]);
+    // b[i][j] = *(b[i]+j) = *(*(b+i)+j)
+    printf("%d\n", *((*(b + 1)) + 2)); // yup work it out on my own ;)
 
-    // printf("%p\n", b[1]);
+    printf("%p\n", *(b + 1) + 2); // b[1][2]'s address.
+    printf("%p\n", &b[1][2]);
+
+    printf("%d\n", *(*b + 1)); // 3
 }
