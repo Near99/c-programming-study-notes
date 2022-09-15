@@ -9,6 +9,7 @@ void pointer_as_function_arguments();
 void pointers_and_arrays();
 void arrays_as_function_arguments();
 void character_arrays_and_pointers();
+void pointers_and_multi_dimensional_arrays();
 
 // helper functions.
 int sum_of_elements(int *a, int size); // helper function for arrays_as_function_arguments.
@@ -28,6 +29,8 @@ int main()
     // arrays_as_function_arguments();
 
     // character_arrays_and_pointers();
+
+    pointers_and_multi_dimensional_arrays();
 
     return 0;
 }
@@ -107,7 +110,7 @@ void increment(int *p)
     printf("%d\n", (*p)++); // 12
 }
 
-// An array's value is just the address of the first element.
+// An array's name is just the address of the first element.
 void pointers_and_arrays()
 {
     int A[5] = {2, 4, 5, 8, 1};
@@ -161,7 +164,8 @@ int sum_of_elements(int *a, int size)
  */
 void character_arrays_and_pointers()
 {
-    char c[20] = "JOHN";
+    char c[20] = "JOHN"; // string gets stored in the space for array.
+    char *s = "JOHN";    // string gets stored as compile time constant which cannot be modified.
     int l = strlen(c);
 
     printf("%s\n", c);         // JOHN
@@ -178,12 +182,48 @@ void character_arrays_and_pointers()
     printf("\n");
 }
 
-void print(char *c)
+void print(const char *c) // adding const to the argument will prevent the array gets modified.
 {
+    // c[0] = 'B'; // error.
     while (*c != '\0')
     {
         printf("%c", *c);
         c++;
     }
     printf("\n");
+}
+
+void pointers_and_multi_dimensional_arrays()
+{
+    // it allocates 24 bytes in sequential order.
+    int b[2][3] = {{2, 3, 6}, {4, 5, 8}};
+
+    // int *p = b; // error cause b will return a pointer to the 1-d array of 3 intergers, but *p needs an address.
+
+    printf("%d\n", sizeof(b));    // 24
+    printf("%d\n", sizeof(b[0])); // 12
+    printf("%d\n", sizeof(b[1])); // 12
+
+    // b = b[0] = &b[0] = &[b][0][0].
+    printf("%p\n", b);        // pointer to the first element of an array of three intergers.
+    printf("%p\n", b[0]);     // b[0] is just b, array's name is the address of its first element.
+    printf("%p\n", &b[0]);    // address to the first element of the three interger array which is.. well the same address as b.
+    printf("%p\n", &b[0][0]); // same as above.
+
+    printf("%p\n", b + 1);
+    printf("%p\n", b[1]);
+    printf("%p\n", &b[1]);
+    printf("%p\n", &b[1][0]);
+
+    // pointer syntax
+    printf("%p\n", b);
+    printf("%p\n", *b);
+    printf("%p\n", &(*b));
+    printf("%p\n", &(*(*b)));
+
+    // printf("%p\n", &b[0][0]);
+    // printf("%p\n", &b[0][1]);
+    // printf("%p\n", &b[0][2]);
+
+    // printf("%p\n", b[1]);
 }
