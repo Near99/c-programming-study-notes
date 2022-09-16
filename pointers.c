@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 // Pointer values are strongly typed.
 
@@ -10,11 +11,18 @@ void pointers_and_arrays();
 void arrays_as_function_arguments();
 void character_arrays_and_pointers();
 void pointers_and_multi_dimensional_arrays();
+void pass_multi_dimensional_arrays();
+void pointers_and_dynamic_memory();
+void pointers_as_function_returns();
+void function_pointers();
 
 // helper functions.
 int sum_of_elements(int *a, int size); // helper function for arrays_as_function_arguments.
+int *add(int *a, int *b);              // helper function for pointers_as_function_returns.
+int sum(int a, int b);                 // helper function for function_pointers.
 void increment();                      // helper function for pointer_as_function_arguments.
 void print();                          // helper function for character_arrays_and_pointers.
+void print_name(const char *name);     // helper function for function_pointers.
 
 int main()
 {
@@ -30,7 +38,13 @@ int main()
 
     // character_arrays_and_pointers();
 
-    pointers_and_multi_dimensional_arrays();
+    // pointers_and_multi_dimensional_arrays();
+
+    // pointers_and_dynamic_memory();
+
+    // pointers_as_function_returns();
+
+    function_pointers();
 
     return 0;
 }
@@ -143,7 +157,7 @@ void arrays_as_function_arguments()
     printf("%d\n", r);
 }
 
-// int a[] is as the as as int *a, another example of "pass by reference".
+// int a[] is as the same as int *a, another example of "pass by reference".
 int sum_of_elements(int *a, int size)
 {
     int r = 0;
@@ -231,4 +245,106 @@ void pointers_and_multi_dimensional_arrays()
     printf("%p\n", &b[1][2]);
 
     printf("%d\n", *(*b + 1)); // 3
+
+    // 3d-arrays
+    int c[3][2][2] = {{{2, 5}, {7, 9}},
+                      {{3, 4}, {6, 1}},
+                      {{0, 8}, {11, 13}}};
+
+    printf("%p %p %p %p %p\n", c, *c, c[0], c[0][0], &c[0][0], &c[0][0][0]);
+
+    pass_multi_dimensional_arrays(c);
+}
+
+void pass_multi_dimensional_arrays(const int (*p)[2][2])
+{
+    printf("%p\n", p);
+}
+
+/**
+ * There are four primary segements for application memory.
+ * 
+ * Heap: size is not fixed. larger free pool of memory. dynamic memory pool.
+ * 
+ * Stack: fixed size, doesn't grow during the run time. the size of stack is allocated at the compile time.
+ * 
+ * Static/Global: store all static and global variables that are not declared inside functions, which exists the whole life time of the application.
+ * 
+ * Code (Text): instructions need to be executed.
+ */
+void pointers_and_dynamic_memory()
+{
+    int a; // local variable which goes on the stack.
+
+    // allocates a contiguous memory area for n locations of type int.
+    // it returns the starting address as a void pointer,
+    // the pointer is casted to the type int* and assigned to the variable p.
+    int *p = (int *)malloc(sizeof(int)); // dynamic memory allocating goes on the heap.
+
+    // how far are these two addresses?
+    printf("%p\n", &a);
+    printf("%p\n", p);
+
+    // allocate for a dynamic memory in heap for an array.
+    int *r = (int *)malloc(sizeof(int) * 40);
+
+    printf("Start printing the address of the array size of 40\n");
+    for (int i = 0; i < 40; i++)
+    {
+        printf("%p\n", r + i);
+    }
+
+    free(p);
+    free(r);
+}
+
+void pointers_as_function_returns()
+{
+    int a = 2, b = 4;
+
+    int *p = add(&a, &b);
+
+    printf("%d\n", *p);
+}
+
+int *add(int *a, int *b)
+{
+
+    // allocate memory in the heap then returning the pointer is fine.
+    // return local variable gets an error cause the variable lives in the stack
+    // and when the function ends executing the memory in the stack for that local
+    // variable gets released.
+    int *c = (int *)malloc(sizeof(int));
+
+    *c = (*a) + (*b);
+
+    return c;
+}
+
+void function_pointers()
+{
+    // function pointer declaration.
+    int (*p)(int, int) = &sum;
+    // execute the function by pointer.
+    int c = (*p)(30, 5);
+
+    // same as above but different syntax.
+    int (*f)(int, int) = sum;
+    int b = p(24, 5);
+
+    printf("%d\n", c);
+    printf("%d\n", b);
+
+    void (*t)(const char *name) = print_name;
+    t("charles");
+}
+
+int sum(int a, int b)
+{
+    return a + b;
+}
+
+void print_name(const char *name)
+{
+    printf("hello %s\n", name);
 }
