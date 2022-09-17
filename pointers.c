@@ -15,14 +15,17 @@ void pass_multi_dimensional_arrays();
 void pointers_and_dynamic_memory();
 void pointers_as_function_returns();
 void function_pointers();
+void function_pointers_and_callbacks();
 
 // helper functions.
-int sum_of_elements(int *a, int size); // helper function for arrays_as_function_arguments.
-int *add(int *a, int *b);              // helper function for pointers_as_function_returns.
-int sum(int a, int b);                 // helper function for function_pointers.
-void increment();                      // helper function for pointer_as_function_arguments.
-void print();                          // helper function for character_arrays_and_pointers.
-void print_name(const char *name);     // helper function for function_pointers.
+int sum_of_elements(int *a, int size);              // helper function for arrays_as_function_arguments.
+int *add(int *a, int *b);                           // helper function for pointers_as_function_returns.
+int sum(int a, int b);                              // helper function for function_pointers.
+int compare(int a, int b);                          // helper function for function_pointers_and_callbacks.
+void sort(int *a, int n, int (*compare)(int, int)); // helper function for function_pointers_and_callbacks.
+void increment();                                   // helper function for pointer_as_function_arguments.
+void print();                                       // helper function for character_arrays_and_pointers.
+void print_name(const char *name);                  // helper function for function_pointers.
 
 int main()
 {
@@ -44,7 +47,9 @@ int main()
 
     // pointers_as_function_returns();
 
-    function_pointers();
+    // function_pointers();
+
+    function_pointers_and_callbacks();
 
     return 0;
 }
@@ -251,7 +256,7 @@ void pointers_and_multi_dimensional_arrays()
                       {{3, 4}, {6, 1}},
                       {{0, 8}, {11, 13}}};
 
-    printf("%p %p %p %p %p\n", c, *c, c[0], c[0][0], &c[0][0], &c[0][0][0]);
+    printf("%p %p %p %p %p %p\n", c, *c, c[0], c[0][0], &c[0][0], &c[0][0][0]);
 
     pass_multi_dimensional_arrays(c);
 }
@@ -263,13 +268,13 @@ void pass_multi_dimensional_arrays(const int (*p)[2][2])
 
 /**
  * There are four primary segements for application memory.
- * 
+ *
  * Heap: size is not fixed. larger free pool of memory. dynamic memory pool.
- * 
+ *
  * Stack: fixed size, doesn't grow during the run time. the size of stack is allocated at the compile time.
- * 
+ *
  * Static/Global: store all static and global variables that are not declared inside functions, which exists the whole life time of the application.
- * 
+ *
  * Code (Text): instructions need to be executed.
  */
 void pointers_and_dynamic_memory()
@@ -347,4 +352,41 @@ int sum(int a, int b)
 void print_name(const char *name)
 {
     printf("hello %s\n", name);
+}
+
+// function pointers can be passed as arguments to functions.
+void function_pointers_and_callbacks()
+{
+    int a[5] = {3, 4, 5, 1, 2};
+    sort(a, 5, compare);
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+}
+
+void sort(int *a, int n, int (*compare)(int, int))
+{
+    int i, j, tmp;
+    for (i = 0; i < n; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (compare(a[i], a[j]) > 0)
+            {
+                tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+        }
+    }
+}
+
+int compare(int a, int b)
+{
+    if (a > b)
+        return 1;
+    return -1;
 }
