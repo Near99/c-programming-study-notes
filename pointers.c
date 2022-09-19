@@ -358,9 +358,10 @@ void print_name(const char *name)
 void function_pointers_and_callbacks()
 {
     int a[5] = {3, 4, 5, 1, 2};
-    sort(a, 5, compare);
+    int n = sizeof(a) / sizeof(a[0]);
+    sort(a, n, compare);
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < n; i++)
     {
         printf("%d ", a[i]);
     }
@@ -370,15 +371,15 @@ void function_pointers_and_callbacks()
 void sort(int *a, int n, int (*compare)(int, int))
 {
     int i, j, tmp;
-    for (i = 0; i < n; i++)
+    for (i = 0; i < n - 1; i++)
     {
-        for (j = i + 1; j < n; j++)
+        for (j = 0; j < n - i - 1; j++)
         {
-            if (compare(a[i], a[j]) > 0)
+            if (compare(a[j], a[j + 1]) > 0)
             {
-                tmp = a[i];
-                a[i] = a[j];
-                a[j] = tmp;
+                tmp = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = tmp;
             }
         }
     }
