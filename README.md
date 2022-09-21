@@ -2,6 +2,6 @@
 
 ## Learning resources
 
-1. The best Youtube channel on C pointers I've found so far is [mycodeschool](https://www.youtube.com/user/mycodeschool/featured).
+1. The best Youtube channel on C pointers I've found so far is [Pointers in C/C++ by mycodeschool](https://www.youtube.com/watch?v=h-HBipu_1P0&list=PL2_aWCzGMAwLZp6LMUKI3cc7pgGsasm2_).
 
 2. I use ***C Primer Plus (6th Edition)*** as the reference book over the classic ***The C Programming Language***.
