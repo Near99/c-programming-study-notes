@@ -44,6 +44,42 @@ you beautiful"
 #define ABS(X) ((X) < 0 ? -(X) : (X))
 #define ISSIGN(X) ((X) == '+' || (X) == '-' ? 1 : 0)
 
+/**
+ * directive playground.
+ */
+#define STABLES 5
+#define SIZE 10
+#undef SIZE
+
+#ifdef MAVIS
+    #include "ActiveDS.h"
+    #define STABLES 5
+#else
+    #include "BiDiSpl.h"
+    #define STABLES 15
+#endif
+
+#ifndef SIZE
+    #define SIZE 100
+#endif
+
+#if SYS == 1
+    #include "amp_math.h"
+#elif SYS == 2
+    #include "vadefs.h"
+#else
+    #include "gameux.h"
+#endif
+
+#if defined (VAX) // newer form of #ifdef
+    #include "sac.h"
+#elif defined (IBMPC)
+    #include "vadefs.h"
+#else 
+    #include "ual.h"
+#endif 
+
+
 void simple_macros()
 {
     int max = MAX(7, 9); // 9
